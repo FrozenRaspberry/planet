@@ -71,6 +71,17 @@ contract ERC721A is
   uint256 private _numberBurnt;
   mapping(address => uint256) private _tokenDataOfAddr;
   mapping(uint256 => uint256) private _sizeDataOfToken;
+  mapping(uint256 => string) private _nameDataOfToken;
+
+  function nameOf(uint tokenId) public view returns (string memory) {
+    return _nameDataOfToken[tokenId];
+  }
+
+  function setName(string memory targetName) public payable {
+    require(balanceOf(msg.sender) == 1, "You don't own any planet.");
+    require(msg.value >= 0.01 ether, "Rename requires 0.01e");
+    _nameDataOfToken[_tokenDataOfAddr[msg.sender]] = targetName;
+  }
 
   function tokenLeft() public view returns (uint256) {
     return totalSupply() - _numberBurnt;
@@ -428,7 +439,7 @@ contract ERC721A is
     require(to != address(0), "ERC721A: mint to the zero address");
     require(!_exists(startTokenId), "ERC721A: token already minted");
     require(quantity <= maxBatchSize, "ERC721A: quantity to mint too high");
-    require(balanceOf(to) == 0, "You have already minted.");
+    require(balanceOf(to) == 0, "You can only own 1 planet.");
 
     _beforeTokenTransfers(address(0), to, startTokenId, quantity);
 

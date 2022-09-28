@@ -42,10 +42,14 @@ contract Planet is Ownable, ERC721A, ReentrancyGuard {
         override
         returns (string memory)
     {
-        require(_exists(tokenId), "This fish does not exist.");
+        require(_exists(tokenId), "This planet does not exist.");
 
         string[7] memory parts;
-        parts[0] = '{"name": "Planet #';
+        if (bytes(nameOf(tokenId)).length == 0) {
+            parts[0] = '{"name": "Planet #';
+        } else {
+            parts[0] = string(abi.encodePacked( '{"name": "', nameOf(tokenId) ,' #' ));
+        }
         parts[1] = toString(tokenId);
         parts[2] = '","description": "Merging planets is a game of extinction.","image":"';
         if (levelOf(tokenId) == 0){
@@ -89,7 +93,7 @@ contract Planet is Ownable, ERC721A, ReentrancyGuard {
     //PUBLIC SALE
     bool public publicSaleStatus = false;
     uint256 public publicPrice = 0.003000 ether;
-    uint256 public amountForPublicSale = 3333;
+    uint256 public amountForPublicSale = maxSupply;
     // per mint public sale limitation
     uint256 public immutable publicSalePerMint = 10;
 
