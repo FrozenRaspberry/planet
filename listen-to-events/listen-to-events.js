@@ -1,6 +1,6 @@
 const ethers = require("ethers")
 const fetch = require('node-fetch')
-// var HttpsProxyAgent = require('https-proxy-agent')
+var HttpsProxyAgent = require('https-proxy-agent')
 
 require("dotenv").config({ path: ".env.test" }) // TEST
 // require("dotenv").config() // PROD
@@ -11,8 +11,7 @@ const planetABI = require(process.env.PLANET_CONTRACT_ABI_FILE_NAME)
 async function refreshPlanet(tokenId) {
     options = {
         method: 'GET',
-        headers: { Accept: 'application/json', 'X-API-KEY': process.env.OS_API_KEY },
-        agent: new HttpsProxyAgent('127.0.0.1:4780')
+        agent: new HttpsProxyAgent('http://127.0.0.1:4780')
     }
     contractAddress = process.env.PLANET_CONTRACT_ADDRESS
     console.log('opensea-update-token', contractAddress, tokenId)
@@ -24,13 +23,12 @@ async function refreshPlanet(tokenId) {
         .then((res) => {
             status = res.status;
             console.log('status:', status)
-            console.log('res:', res)
             return res.json()
         })
         .then((jsonResponse) => {
             response = jsonResponse
-            console.log('jsonResponse\n', jsonResponse)
-            console.log('status', status)
+            console.log('tokenId', response.token_id)
+            console.log('traits', response.traits)            
         })
         .catch((err) => {
             status = 500
@@ -76,5 +74,4 @@ async function main() {
 	})
 }
 
-// main()
-refreshPlanet(1)
+main()
