@@ -66,7 +66,7 @@ contract ERC721A is
   mapping(address => AddressData) private _addressData;
 
   // Custom Attr
-  event LevelUp(uint256 tokenId, uint256 Level, address owner);
+  event LevelUp(uint256 tokenId, uint256 level, address owner);
 
   uint256 private _numberBurnt;
   mapping(address => uint256) private _tokenDataOfAddr;
