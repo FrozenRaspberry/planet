@@ -11,6 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.2",
-    "ethers": "^5.7.1"
+    "ethers": "^5.7.1",
+    "https-proxy-agent": "^5.0.1",
+    "node-fetch": "2.0"
   }
 }

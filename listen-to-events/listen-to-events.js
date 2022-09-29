@@ -1,10 +1,50 @@
 const ethers = require("ethers")
-const planetABI = 
+const fetch = require('node-fetch')
+// var HttpsProxyAgent = require('https-proxy-agent')
 
 require("dotenv").config({ path: ".env.test" }) // TEST
 // require("dotenv").config() // PROD
-
 console.log(process.env.ENV)
+
+const planetABI = require(process.env.PLANET_CONTRACT_ABI_FILE_NAME)
+
+async function refreshPlanet(tokenId) {
+    options = {
+        method: 'GET',
+        headers: { Accept: 'application/json', 'X-API-KEY': process.env.OS_API_KEY },
+        agent: new HttpsProxyAgent('127.0.0.1:4780')
+    }
+    contractAddress = process.env.PLANET_CONTRACT_ADDRESS
+    console.log('opensea-update-token', contractAddress, tokenId)
+    url = 'https://testnets-api.opensea.io/api/v1/asset/' + contractAddress + '/' + tokenId + '?force_update=true'
+    console.log('url:', url)
+    var status
+    var response
+    await fetch(url, options)
+        .then((res) => {
+            status = res.status;
+            console.log('status:', status)
+            console.log('res:', res)
+            return res.json()
+        })
+        .then((jsonResponse) => {
+            response = jsonResponse
+            console.log('jsonResponse\n', jsonResponse)
+            console.log('status', status)
+        })
+        .catch((err) => {
+            status = 500
+            response = {msg: err}
+            console.error(err)
+        });
+    return {
+        statusCode: status,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(response)
+    }
+}
 
 async function main() {
 	const planetContractAddress = process.env.PLANET_CONTRACT_ADDRESS
@@ -19,6 +59,8 @@ async function main() {
 			data: event,
 		}
 		console.log(JSON.stringify(info, null, 4))
+		console.log('refresh planet', tokenId)
+		refreshPlanet(tokenId)
 	})
 
 	contract.on("LevelUp", (tokenId, level, owner, event) => {
@@ -29,7 +71,10 @@ async function main() {
 			data: event,
 		}
 		console.log(JSON.stringify(info, null, 4))
+		console.log('refresh planet', tokenId)
+		refreshPlanet(tokenId)
 	})
 }
 
-main()
+// main()
+refreshPlanet(1)
