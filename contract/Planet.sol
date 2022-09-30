@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract Planet is Ownable, ERC721A, ReentrancyGuard {
     uint public maxSupply = 1666;
     constructor(
-    ) ERC721A("PLANET", "Merging Planets", 1, maxSupply) {}
+    ) ERC721A("PLANET", "Merging Galaxy", 1, maxSupply) {}
 
     function reserveMint(uint256 quantity) external onlyOwner {
         require(
@@ -51,15 +51,15 @@ contract Planet is Ownable, ERC721A, ReentrancyGuard {
             parts[0] = string(abi.encodePacked( '{"name": "', nameOf(tokenId) ,' #' ));
         }
         parts[1] = toString(tokenId);
-        parts[2] = '","description": "Merging planets is a game of extinction.","image":"';
+        parts[2] = '","description": "Merging Galaxy is a space of extinction.","image":"';
         if (levelOf(tokenId) == 0){
             parts[3] = string(abi.encodePacked( _baseURI(), toString(typeOf(tokenId)),'-', toString(levelOf(tokenId)), '-', toString(tokenId%3+1), '.gif'));
         } else {
             parts[3] = string(abi.encodePacked( _baseURI(), toString(typeOf(tokenId)),'-', toString(levelOf(tokenId)), '.gif'));
         }
-        parts[4] = '","attributes": [{"trait_type": "Level","value":';
+        parts[4] = '","attributes": [{"display_type": "number","trait_type": "Level","value":';
         parts[5] = toString(levelOf(tokenId));
-        parts[6] = '}]}';
+        parts[6] = string(abi.encodePacked('},{"display_type": "number", "trait_type": "Size(km)", "value": ',toString(radiusOf(tokenId)),'}]}'));
 
         string memory output = string(abi.encodePacked(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6]));
 
@@ -92,7 +92,7 @@ contract Planet is Ownable, ERC721A, ReentrancyGuard {
 
     //PUBLIC SALE
     bool public publicSaleStatus = false;
-    uint256 public publicPrice = 0.003000 ether;
+    // uint256 public publicPrice = 0.003000 ether;
     uint256 public amountForPublicSale = maxSupply;
     // per mint public sale limitation
     uint256 public immutable publicSalePerMint = 10;
@@ -126,25 +126,6 @@ contract Planet is Ownable, ERC721A, ReentrancyGuard {
 
     function getPublicSaleStatus() external view returns(bool) {
         return publicSaleStatus;
-    }
-
-    function toString(uint256 value) internal pure returns (string memory) {
-        if (value == 0) {
-            return "0";
-        }
-        uint256 temp = value;
-        uint256 digits;
-        while (temp != 0) {
-            digits++;
-            temp /= 10;
-        }
-        bytes memory buffer = new bytes(digits);
-        while (value != 0) {
-            digits -= 1;
-            buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
-            value /= 10;
-        }
-        return string(buffer);
     }
 }
 

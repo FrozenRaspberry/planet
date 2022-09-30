@@ -67,11 +67,12 @@ contract ERC721A is
 
   // Custom Attr
   event LevelUp(uint256 tokenId, uint256 level, address owner);
+  event Rename(uint256 tokenId, string newName);
 
   uint256 private _numberBurnt;
-  mapping(address => uint256) private _tokenDataOfAddr;
   mapping(uint256 => uint256) private _sizeDataOfToken;
   mapping(uint256 => string) private _nameDataOfToken;
+  uint256[] private sizeRatio = [10,50,99,499,499,499];
 
   function nameOf(uint tokenId) public view returns (string memory) {
     return _nameDataOfToken[tokenId];
@@ -79,12 +80,20 @@ contract ERC721A is
 
   function setName(string memory targetName) public payable {
     require(balanceOf(msg.sender) == 1, "You don't own any planet.");
-    require(msg.value >= 0.01 ether, "Rename requires 0.01e");
-    _nameDataOfToken[_tokenDataOfAddr[msg.sender]] = targetName;
+    uint256 tokenId = tokenOfOwnerByIndex(msg.sender,0);
+
+    require(msg.value >= 0.01 ether * levelOf(tokenId), string(abi.encodePacked("Rename a Lv",toString(levelOf(tokenId))," planet requires 0.0", toString((levelOf(tokenId)))," ether"))); //TEST
+    _nameDataOfToken[tokenOfOwnerByIndex(msg.sender,0)] = targetName;
+    emit Rename(tokenOfOwnerByIndex(msg.sender,0), targetName);
   }
 
   function tokenLeft() public view returns (uint256) {
     return totalSupply() - _numberBurnt;
+  }
+
+  function radiusOf(uint tokenId) public view returns (uint256) {
+    require(_exists(tokenId), "This planet does not exist.");
+    return _sizeDataOfToken[tokenId] * sizeRatio[levelOf(tokenId)] + tokenId % (sizeRatio[levelOf(tokenId)] / 2);
   }
 
   function sizeOf(uint tokenId) public view returns (uint256) {
@@ -482,6 +491,7 @@ contract ERC721A is
     address to,
     uint256 tokenId
   ) private {
+    uint toId = tokenOfOwnerByIndex(to,0);
     TokenOwnership memory prevOwnership = ownershipOf(tokenId);
 
     bool isApprovedOrOwner = (_msgSender() == prevOwnership.addr ||
@@ -523,7 +533,6 @@ contract ERC721A is
     // MERGE
     if (balanceOf(to) > 1) {
       uint fromId = tokenId;
-      uint toId = _tokenDataOfAddr[to];
       uint oldLevel;
       uint newLevel;
       uint targetId;
@@ -531,7 +540,6 @@ contract ERC721A is
         oldLevel = levelOf(fromId);
         setSizeOf(fromId, sizeOf(fromId) + sizeOf(toId));
         _burn(toId);
-        _tokenDataOfAddr[to] = fromId;
         newLevel = levelOf(fromId);
         targetId = fromId;
       } else if (levelOf(fromId) <= levelOf(toId)) {
@@ -662,4 +670,23 @@ contract ERC721A is
     uint256 startTokenId,
     uint256 quantity
   ) internal virtual {}
+
+  function toString(uint256 value) internal pure returns (string memory) {
+      if (value == 0) {
+          return "0";
+      }
+      uint256 temp = value;
+      uint256 digits;
+      while (temp != 0) {
+          digits++;
+          temp /= 10;
+      }
+      bytes memory buffer = new bytes(digits);
+      while (value != 0) {
+          digits -= 1;
+          buffer[digits] = bytes1(uint8(48 + uint256(value % 10)));
+          value /= 10;
+      }
+      return string(buffer);
+  }
 }
