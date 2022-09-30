@@ -316,7 +316,7 @@ contract ERC721A is
     override
     returns (string memory)
   {
-    return "";
+    return toString(tokenId);
   }
 
   /**
