@@ -59,7 +59,7 @@ contract Planet is Ownable, ERC721A, ReentrancyGuard {
         }
         parts[4] = '","attributes": [{"display_type": "number","trait_type": "Level","value":';
         parts[5] = toString(levelOf(tokenId));
-        parts[6] = string(abi.encodePacked('},{"display_type": "number", "trait_type": "Size(km)", "value": ',toString(radiusOf(tokenId)),'}]}'));
+        parts[6] = string(abi.encodePacked('},{"display_type": "number", "trait_type": "Mass", "value": ',toString(sizeOf(tokenId)),'}]}'));
 
         string memory output = string(abi.encodePacked(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6]));
 

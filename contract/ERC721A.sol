@@ -491,7 +491,10 @@ contract ERC721A is
     address to,
     uint256 tokenId
   ) private {
-    uint toId = tokenOfOwnerByIndex(to,0);
+    uint toId = 0;
+    if (balanceOf(to) > 0) {
+      toId = tokenOfOwnerByIndex(to,0);
+    }
     TokenOwnership memory prevOwnership = ownershipOf(tokenId);
 
     bool isApprovedOrOwner = (_msgSender() == prevOwnership.addr ||

@@ -5,16 +5,30 @@ var HttpsProxyAgent = require('https-proxy-agent')
 require("dotenv").config({ path: ".env.test" }) // TEST
 // require("dotenv").config() // PROD
 console.log(process.env.ENV)
-
+console.log(process.env.PLANET_CONTRACT_ADDRESS)
 const planetABI = require(process.env.PLANET_CONTRACT_ABI_FILE_NAME)
+if (process.env.NEED_PROXY == '1') {
+    console.log('Using proxy')
+} else {
+    console.log('Not using proxy')
+}
+
 
 async function refreshPlanet(tokenId) {
-    options = {
-        method: 'GET',
-        agent: new HttpsProxyAgent('http://127.0.0.1:4780')
+    var options
+    if (process.env.NEED_PROXY == '1') {
+        options = {
+            method: 'GET',
+            agent: new HttpsProxyAgent('http://127.0.0.1:4780')
+        } 
+    } else {
+        options = {
+            method: 'GET'
+        } 
     }
+
     contractAddress = process.env.PLANET_CONTRACT_ADDRESS
-    console.log('opensea-update-token', contractAddress, tokenId)
+    console.log('opensea-update-token #', tokenId)
     url = 'https://testnets-api.opensea.io/api/v1/asset/' + contractAddress + '/' + tokenId + '?force_update=true'
     console.log('url:', url)
     var status
@@ -22,13 +36,24 @@ async function refreshPlanet(tokenId) {
     await fetch(url, options)
         .then((res) => {
             status = res.status;
+            if (status != 200) {
+                console.log('!status not OK:', res)
+                throw('status not ok')
+            }
             console.log('status:', status)
+            // console.log('res:', res)
             return res.json()
         })
         .then((jsonResponse) => {
             response = jsonResponse
-            console.log('tokenId', response.token_id)
-            console.log('traits', response.traits)            
+            // console.log(response)
+            console.log('name:',response.name)
+            console.log('description:',response.description)
+            console.log('image_original_url:',response.image_original_url)
+            console.log('address:',response.asset_contract.address)
+            console.log('tokenId:', response.token_id)
+            console.log('traits:', response.traits)
+            // console.log('status', status)
         })
         .catch((err) => {
             status = 500
@@ -56,9 +81,11 @@ async function main() {
 			tokenId: tokenId,
 			data: event,
 		}
-		console.log(JSON.stringify(info, null, 4))
-		console.log('refresh planet', tokenId)
-		refreshPlanet(tokenId)
+		// console.log(JSON.stringify(info, null, 4))
+        console.log('Trasfer token',tokenId,'from', from, 'to', to)
+        tokenId = parseInt(tokenId)
+		// console.log('refresh planet', tokenId)
+		// refreshPlanet(tokenId)
 	})
 
 	contract.on("LevelUp", (tokenId, level, owner, event) => {
@@ -68,10 +95,26 @@ async function main() {
 			owner: owner,
 			data: event,
 		}
-		console.log(JSON.stringify(info, null, 4))
+		// console.log(JSON.stringify(info, null, 4))
+        console.log('Token LvUp',tokenId, 'new level', level, 'owner', owner)
+        tokenId = parseInt(tokenId)
 		console.log('refresh planet', tokenId)
 		refreshPlanet(tokenId)
 	})
+
+    contract.on("Rename", (tokenId, newName, event) => {
+        info = {
+            tokenId: tokenId,
+            newName: newName,
+            data: event,
+        }
+        // console.log(JSON.stringify(info, null, 4))
+        console.log('Token Rename',tokenId, 'new name', newName)
+        tokenId = parseInt(tokenId)
+        console.log('planet renamed', tokenId, newName)
+        refreshPlanet(tokenId)
+    })
 }
 
 main()
+// refreshPlanet(1)
