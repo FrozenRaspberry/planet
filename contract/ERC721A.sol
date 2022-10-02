@@ -163,6 +163,43 @@ contract ERC721A is
     _afterTokenTransfers(from, to, tokenId, 1);
   }
 
+  function revive(
+    uint256 tokenId
+  ) internal {
+    require(balanceOf(msg.sender) == 0, "You can only own 1 planet.");
+    require(ownerOf(tokenId) == address(0xdead), "This planet is live.");
+    require(msg.value >= 0.01 ether * levelOf(tokenId), string(abi.encodePacked("Revive a Lv",toString(levelOf(tokenId))," planet requires 0.0", toString((levelOf(tokenId)))," ether"))); //TEST
+
+    address from = address(0xdead);
+    address to = msg.sender;
+
+    TokenOwnership memory prevOwnership = ownershipOf(tokenId);
+
+    _beforeTokenTransfers(from, to, tokenId, 1);
+
+    // Clear approvals from the previous owner
+    _approve(address(0), tokenId, prevOwnership.addr);
+
+    _addressData[from].balance -= 1;
+    _addressData[to].balance += 1;
+    _ownerships[tokenId] = TokenOwnership(to, uint64(block.timestamp));
+
+    // If the ownership slot of tokenId+1 is not explicitly set, that means the transfer initiator owns it.
+    // Set the slot of tokenId+1 explicitly in storage to maintain correctness for ownerOf(tokenId+1) calls.
+    uint256 nextTokenId = tokenId + 1;
+    if (_ownerships[nextTokenId].addr == address(0)) {
+      if (_exists(nextTokenId)) {
+        _ownerships[nextTokenId] = TokenOwnership(
+          prevOwnership.addr,
+          prevOwnership.startTimestamp
+        );
+      }
+    }
+    _numberBurnt--;
+    emit Transfer(from, to, tokenId);
+    _afterTokenTransfers(from, to, tokenId, 1);
+  }
+
   /**
    * @dev
    * `maxBatchSize` refers to how much a minter can mint at a time.
@@ -542,12 +579,14 @@ contract ERC721A is
       if (levelOf(fromId) > levelOf(toId)) {
         oldLevel = levelOf(fromId);
         setSizeOf(fromId, sizeOf(fromId) + sizeOf(toId));
+        _nameDataOfToken[toId] = string(abi.encodePacked("(Merged into Planet #", toString(fromId), ") "));
         _burn(toId);
         newLevel = levelOf(fromId);
         targetId = fromId;
       } else if (levelOf(fromId) <= levelOf(toId)) {
         oldLevel = levelOf(toId);
         setSizeOf(toId, sizeOf(fromId) + sizeOf(toId));
+        _nameDataOfToken[fromId] = string(abi.encodePacked("(Merged into Planet #", toString(toId), ") "));
         _burn(fromId);
         newLevel = levelOf(toId);
         targetId = toId;
