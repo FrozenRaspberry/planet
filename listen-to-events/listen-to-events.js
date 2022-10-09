@@ -1,5 +1,6 @@
 const ethers = require("ethers")
 const fetch = require('node-fetch')
+const http = require('http')
 var HttpsProxyAgent = require('https-proxy-agent')
 
 require("dotenv").config({ path: ".env.test" }) // TEST
@@ -13,13 +14,14 @@ if (process.env.NEED_PROXY == '1') {
     console.log('Not using proxy')
 }
 
+var planetRankList = []
 
 async function refreshPlanet(tokenId) {
     var options
     if (process.env.NEED_PROXY == '1') {
         options = {
             method: 'GET',
-            agent: new HttpsProxyAgent('http://127.0.0.1:4780')
+            agent: new HttpsProxyAgent('http://127.0.0.1:7890')
         } 
     } else {
         options = {
@@ -29,7 +31,7 @@ async function refreshPlanet(tokenId) {
 
     contractAddress = process.env.PLANET_CONTRACT_ADDRESS
     console.log('opensea-update-token #', tokenId)
-    url = 'https://testnets-api.opensea.io/api/v1/asset/' + contractAddress + '/' + tokenId + '?force_update=true'
+    url = process.env.OS_API_URL + '/api/v1/asset/' + contractAddress + '/' + tokenId + '?force_update=true'
     console.log('url:', url)
     var status
     var response
@@ -69,6 +71,44 @@ async function refreshPlanet(tokenId) {
     }
 }
 
+function updatePlanetRankList(tokenId, level) {
+    if (planetRankList.length == 0) {
+        planetRankList.push({id:tokenId, level:level})
+        return
+    }
+    index = 0
+    while (index < planetRankList.length) {
+        if (planetRankList[index].id == tokenId) {
+            planetRankList.splice(index, 1)
+            break
+        }
+        index++
+    }
+    index = planetRankList.length - 1
+    while (index >= 0) {
+        if (planetRankList[index].level > level) {
+            planetRankList.splice(index+1, 0, {id:tokenId, level:level})
+            return
+        }
+        index --
+    }
+    planetRankList.splice(0, 0, {id:tokenId, level:level})
+}
+
+function removePlanetFromRankList(tokenId) {
+    if (planetRankList.length == 0) {
+        return
+    }
+    index = 0
+    while (index < planetRankList.length) {
+        if (planetRankList[index].id == tokenId) {
+            planetRankList.splice(index, 1)
+            break
+        }
+        index++
+    }
+}
+
 async function main() {
 	const planetContractAddress = process.env.PLANET_CONTRACT_ADDRESS
 	const planetContractAbi = require(process.env.PLANET_CONTRACT_ABI_FILE_NAME)
@@ -84,8 +124,12 @@ async function main() {
 		// console.log(JSON.stringify(info, null, 4))
         console.log('Trasfer token',tokenId,'from', from, 'to', to)
         tokenId = parseInt(tokenId)
-		// console.log('refresh planet', tokenId)
-		// refreshPlanet(tokenId)
+		console.log('refresh planet', tokenId)
+		refreshPlanet(tokenId)
+        if (to == '0x000000000000000000000000000000000000dEaD') {
+            removePlanetFromRankList(tokenId)
+            console.log('current planet list:', planetRankList)
+        }
 	})
 
 	contract.on("LevelUp", (tokenId, level, owner, event) => {
@@ -100,6 +144,8 @@ async function main() {
         tokenId = parseInt(tokenId)
 		console.log('refresh planet', tokenId)
 		refreshPlanet(tokenId)
+        updatePlanetRankList(tokenId, level)
+        console.log('current planet list:', planetRankList)
 	})
 
     contract.on("Rename", (tokenId, newName, event) => {
@@ -117,4 +163,36 @@ async function main() {
 }
 
 main()
-// refreshPlanet(1)
+
+
+http.createServer((request, response) => {
+  const { headers, method, url } = request;
+  let body = [];
+  request.on('error', (err) => {
+    console.error(err);
+  }).on('data', (chunk) => {
+    body.push(chunk);
+  }).on('end', () => {
+    body = Buffer.concat(body).toString();
+    // BEGINNING OF NEW STUFF
+
+    response.on('error', (err) => {
+      console.error(err);
+    });
+
+    response.statusCode = 200;
+    response.setHeader('Content-Type', 'application/json');
+    // Note: the 2 lines above could be replaced with this next one:
+    // response.writeHead(200, {'Content-Type': 'application/json'})
+
+    // const responseBody = { headers, method, url, body };
+    const responseBody = {planetRankList};
+
+    response.write(JSON.stringify(responseBody));
+    response.end();
+    // Note: the 2 lines above could be replaced with this next one:
+    // response.end(JSON.stringify(responseBody))
+
+    // END OF NEW STUFF
+  });
+}).listen(8080);
