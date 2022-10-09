@@ -1,0 +1,439 @@
+@font-face {
+    font-family: 'potion';
+    src: url(./font/BitPotionExt.ttf);
+}
+
+body {
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #1f1b1a;
+    background-position: bottom center;
+    background-size: 100%;
+    background-image: url('/img/star-bg.png');
+    margin: 0;
+    padding: 0;
+}
+
+body * {
+    font-family: potion;
+    font-size: 30px;
+    scrollbar-width: none;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+    /* Safari and Chrome */
+}
+
+.body-mid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.label-text {
+    color: #ffffff;
+    font-size: 60px;
+}
+
+.label-text-light {
+    color: #ffffff;
+    font-size: 60px;
+}
+
+a.label-text {
+    color: #ffffff;
+    font-size: 60px;
+}
+
+a.label-text:hover {
+    color: #cfcfcf;
+}
+
+a.label-text-light {
+    color: #ffffff;
+    font-size: 60px;
+}
+
+a.label-text-light:hover {
+    color: #cfcfcf;
+}
+
+div.tool-button-group {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+}
+
+div.tool-button-group-right {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+}
+
+img.tool-button {
+    cursor: pointer;
+    width: 70px;
+    height: 70px;
+}
+
+
+div.menu-button-group {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+p.menu-spell-mint {
+}
+
+.mint-text {
+    color: #132243;
+    font-size: 210px;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #cfcfcf;
+    background-color: #000000;
+    border: 2px solid #cfcfcf;
+    transition-duration: 0.4s;
+}
+
+button:hover {
+    color: #000000;
+    background-color: #cfcfcf;
+}
+
+button.connect {
+    width: 459px;
+    height: 97px;
+    font-size: 66px;
+}
+
+button.mint {
+    width: 259px;
+    height: 97px;
+    font-size: 66px;
+}
+
+button.brew {
+    width: 269px;
+    height: 76px;
+    font-size: 66px;
+}
+
+button.claim {
+    width: 269px;
+    height: 76px;
+    font-size: 66px;
+}
+
+button.activate {
+    width: 269px;
+    height: 76px;
+    font-size: 66px;
+}
+
+button.craft {
+    width: 427px;
+    height: 76px;
+    font-size: 45px;
+}
+
+button.upgrade {
+    width: 420px;
+    height: 76px;
+    font-size: 42px;
+}
+
+div.connect-page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div.premint-page {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.mint-page {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.soldout-page {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.game-page {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+div.spell-page {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+
+div.game-column {
+    display: flex;
+    flex: 33.33%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.potion-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-height: 60vh;
+    overflow: scroll;
+}
+
+div.potion-list::-webkit-scrollbar {
+    display: none;
+}
+
+img.potion {
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+}
+
+div.artifact-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-height: 60vh;
+    overflow: scroll;
+}
+
+div.artifact-list::-webkit-scrollbar {
+    display: none;
+}
+
+
+img.artifact {
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+}
+
+div.brew {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.ingredient {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.brew-text {
+    text-align: center;
+}
+
+div.brewing-ingredient {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.brewing-text {
+    text-align: center;
+}
+
+
+p.cancel {
+    font-size: 35px;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+div.game-column-craft {
+    display: flex;
+    flex: 33.33%;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+    background-image: url("../img/circle-bg.png");
+}
+
+div.craft-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.craft-activate-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.craft-idle-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1
+}
+
+div.craft-claim-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1
+}
+
+div.craft-row-top {
+    flex-grow: 1
+}
+
+div.craft-row-mid {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    flex-grow: 2
+}
+
+div.craft-potion-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex-grow: 1
+}
+
+div.craft-result-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1
+}
+
+div.craft-spell-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex-grow: 1
+}
+
+div.craft-row-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+div.spell-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-height: 60vh;
+    overflow: scroll;
+}
+
+div.spell-list::-webkit-scrollbar {
+    display: none;
+}
+
+img.spell {
+    width: 80px;
+    height: 80px;
+    margin: 10px;
+}
+
+div.spell-big-container {
+    position: relative;
+    width: 110px;
+    height: 110px;
+}
+
+img.spell-big {
+    width: 110px;
+    height: 110px;
+    margin: 10px;
+}
+
+
+@keyframes glow {
+  0% {
+    -webkit-box-shadow: 0 0 14px rgba(72, 106, 170, 0.5);
+    border-color: rgba(160, 179, 214, 0.5);
+  }
+  50% {
+    -webkit-box-shadow: 0 0 18px rgba(72, 106, 170, 1.0), 0 0 18px rgba(0, 140, 255, 1.0);
+    border-color: rgba(160, 179, 214, 1.0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 14px rgba(72, 106, 170, 0.5);
+    border-color: rgba(160, 179, 214, 0.5);
+  }
+}
+
+svg {
+    -webkit-box-shadow: 0 0 9px rgba(72, 106, 170, 0.5);
+    border-color: rgba(160, 179, 214, 0.5);
+}
+
+svg.ready {
+    animation-duration: 3s;
+    animation-name: glow;
+    animation-iteration-count: infinite;
+}
+
+
+/*toast css*/
+.toast {
+    max-width: 30vw;
+    flex-basis: auto;
+}
