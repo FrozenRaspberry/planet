@@ -142,6 +142,21 @@ async function updateContractStatus() {
             maxSupply = r
             console.log('maxSupply: ', parseInt(maxSupply))
         })
+
+        p_planetBalance = gameContract.balanceOf(userAccount)
+        p_planetBalance.then((r) => {
+            planetBalance = r
+            console.log('planetBalance: ', parseInt(planetBalance))
+        })
+
+        Promise.all([p_planetBalance]).then((values) => {
+            switchPageStatus('game')
+            if (planetBalance == 0) {
+                console.log('no planet')
+            } else {
+                console.log('have planet')
+            }
+        })
     } else {
         console.log('Game contract not set yet.')
     }

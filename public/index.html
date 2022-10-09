@@ -29,13 +29,12 @@
 
 <body>
     <div class="tool-button-group">
-        <img class="tool-button tt-button" src="img/social-tt.png" onclick="window.open('https://twitter.com/mutantpotion', '_blank');"></img>
-        <img class="tool-button opensea-button" src="img/social-os.png" onclick="window.open('https://opensea.io/collection/mutant-potion', '_blank');"></img>
+        <img class="tool-button tt-button" src="img/social-tt.png"></img>
+        <img class="tool-button opensea-button" src="img/social-os.png"></img>
     </div>
     <div class="body-head">
         <div class="menu-button-group mt-3">
             <p class="label-text-light mr-5 menu-brew">Merging Galaxy</p>
-            <p class="label-text ml-5 menu-spell-mint" style="text-decortion: underine; display:none">Mint Now!</p>
         </div>
     </div>
     <div class="body-mid">
@@ -53,7 +52,7 @@
                     </template>
                 </div>
             </div>
-            <div class="game-column">
+<!--             <div class="game-column">
                 <div class="brew-loading label-text-light">Loading...</div>
                 <div class="brew" style="display: none;">
                     <p class="label-text-light brew-text title">Select Your Potion<br />And Start Brewing</p>
@@ -73,79 +72,14 @@
                     <button class="claim mt-5" style="display: none;">Claim</button>
                     <p class="label-text-light brewing-text cancel mt-4">Cancel Brewing</p>
                 </div>
-            </div>
-            <div class="game-column">
-                <p class="label-text artifact-title">Your Artifacts</p>
-                <div class="artifact-list">
-                    <template id="artifact-item-template">
-                        <img class="artifact" src="img/potion/empty.png"></img>
-                    </template>
+            </div> -->
+            <div class="game-column player-planet">
+                <div class="have-no-planet">
+                    NO PLANET
                 </div>
-            </div>
-        </div>
-        <!-- CRAFT SPELL PAGE -->
-        <div class="spell-page" style="display: none;">
-            <div class="game-column pr-4">
-                <p class="label-text potion-title">Your Potions</p>
-                <div class="potion-list">
-                    <template id="potions-item-template">
-                        <img class="potion" src="img/potion/empty.png"></img>
-                    </template>
-                </div>
-            </div>
-            <div class="game-column-craft" style="max-width: 500px;">
-                <div class="craft-loading label-text-light">Loading...</div>
-                <div class="craft-empty-page" style="display: none;">
-                    <p class="craft-message label-text-light text-center mt-2" style="line-height: normal;"></p>
-                </div>
-                <div class="craft-activate-page" style="display: none;">
-                    <button class="activate mb-2">Activate</button>
-                    <p class="craft-message label-text-light text-center mt-2" style="line-height: normal;"></p>
-                </div>
-                <div class="craft-idle-page" style="display: none;">
-                    <div class="craft-row-top">
-                    </div>
-                    <div class="craft-row-mid">
-                        <div class="craft-potion-col mr-5">
-                            <img class="potion empty" src="img/potion/empty.png"></img>
-                        </div>
-                        <div class="craft-result-col">
-                            <img class="spell-big empty" src="img/spell_img/empty.png"></img>
-                        </div>
-                        <div class="craft-spell-col ml-5">
-                            <img class="spell empty" src="img/spell_img/empty.png"></img>
-                        </div>
-                    </div>
-                    <div class="craft-row-bottom">
-                        <button class="craft" style="display:none;">Craft New Spell</button>
-                        <p class="craft-message label-text-light text-center"></p>
-                    </div>
-                </div>
-                <div class="craft-claim-page" style="display: none;">
-                    <div class="craft-row-top">
-                    </div>
-                    <div class="craft-row-mid">
-                        <div class="craft-potion-col mr-5">
-                        </div>
-                        <div class="craft-result-col">
-                        </div>
-                        <div class="craft-spell-col ml-5">
-                        </div>
-                    </div>
-                    <div class="craft-row-bottom">
-                        <button class="upgrade free" style="display:none;">Upgrade with Potion (FREE)</button>
-                        <button class="upgrade paid mt-5" style="display:none;">Upgrade & Keep Potion (0.0069e)</button>
-                        <p class="craft-message label-text-light text-center"></p>
-                        <p class="label-text-light craft-text cancel mt-4">Cancel Upgrading</p>
-                    </div>
-                </div>
-            </div>
-            <div class="game-column pl-4">
-                <p class="label-text spell-title">Your Spell</p>
-                <div class="spell-list">
-                    <template id="spell-item-template">
-                        <img class="spell" src="img/spell_img/empty.png"></img>
-                    </template>
+                <div class="have-planet">
+                    <p class="label-text planet-title">Your Planet</p>
+                    HAVE PLANET
                 </div>
             </div>
         </div>

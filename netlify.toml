@@ -1,0 +1,13 @@
+# Use [dev] to set configuration overrides for local 
+# development environments run using Netlify Dev - except 
+# for environment variables. Environment variables for Netlify 
+# Dev should be set under [context.dev.environment] instead.
+[build]
+  command = "build.bat"
+
+[dev]
+  port = 8088
+  publish = "public"
+
+[functions]
+  node_bundler = "esbuild"

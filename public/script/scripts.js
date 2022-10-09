@@ -23,6 +23,7 @@ var gameContractAbi = null
 var totalSupply = null
 var publicSaleStatus = null
 var maxSupply = null
+var planetBalance = null
 
 var globalTest = null
 
@@ -31,6 +32,7 @@ var planetSlugName = null
 var fetchAsssetUrl = null
 var openSeaUrl = null
 
+var tHandler = 'MergingGalaxy'
 if (env == ENV.TEST) {
     console.log('=== TEST ENV ===')
     openSeaUrl = 'https://testnets.opensea.io/collection/'
@@ -54,6 +56,13 @@ $(document).ready(function() {
 
 async function init() {
     $("button.connect").click(connect)
+
+    $(".tool-button.opensea-button").click(function (e) {
+        window.open(openSeaUrl+planetSlugName, '_blank')
+    })
+    $(".tool-button.tt-button").click(function (e) {
+        window.open('https://twitter.com/'+tHandler, '_blank')
+    })
     // $("button.brew").click(brew)
     // $("button.claim").click(claim)
     // $("p.brewing-text.cancel").click(cancel)
@@ -76,5 +85,15 @@ async function init() {
         updateContractStatus()
     } else {
         console.log('connect failed with code ' + connectResult.code + '\n' + 'msg: ' + connectResult.msg)
+    }
+}
+
+function switchPageStatus(status) {
+    if (status == 'game') {
+        console.log('switch to game status')
+        $('.connect-page').hide()
+        $('.game-page').show()
+    } else {
+        console.error('Invalid page status', status)
     }
 }
