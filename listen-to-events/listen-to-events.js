@@ -16,6 +16,28 @@ if (process.env.NEED_PROXY == '1') {
 
 var planetRankList = []
 
+const fs = require('fs');
+
+async function savePlanetRankListToFile() {
+    fs.writeFile("./planetRankList.json", JSON.stringify(planetRankList), function(err) {
+        if(err) {
+            return console.log(err);
+        }
+        console.log("The file was saved!");
+    })
+}
+
+async function loadPlanetRankListFromFile() {
+    try {
+        rawdata = fs.readFileSync('./planetRankList.json');
+        planetRankList = JSON.parse(rawdata);
+        console.log('planet rank list loaded', planetRankList)
+    } catch (err) {
+        console.log(err)
+        planetRankList = []
+    }
+}
+
 async function refreshPlanet(tokenId) {
     var options
     if (process.env.NEED_PROXY == '1') {
@@ -93,6 +115,7 @@ function updatePlanetRankList(tokenId, level) {
         index --
     }
     planetRankList.splice(0, 0, {id:tokenId, level:level})
+    savePlanetRankListToFile()
 }
 
 function removePlanetFromRankList(tokenId) {
@@ -107,6 +130,7 @@ function removePlanetFromRankList(tokenId) {
         }
         index++
     }
+    savePlanetRankListToFile()
 }
 
 async function main() {
@@ -122,7 +146,7 @@ async function main() {
 			data: event,
 		}
 		// console.log(JSON.stringify(info, null, 4))
-        console.log('Trasfer token',tokenId,'from', from, 'to', to)
+        console.log('!Trasfer token',tokenId,'from', from, 'to', to)
         tokenId = parseInt(tokenId)
 		console.log('refresh planet', tokenId)
 		refreshPlanet(tokenId)
@@ -140,8 +164,9 @@ async function main() {
 			data: event,
 		}
 		// console.log(JSON.stringify(info, null, 4))
-        console.log('Token LvUp',tokenId, 'new level', level, 'owner', owner)
+        console.log('!Token LvUp',tokenId, 'new level', level, 'owner', owner)
         tokenId = parseInt(tokenId)
+        level = parseInt(level)
 		console.log('refresh planet', tokenId)
 		refreshPlanet(tokenId)
         updatePlanetRankList(tokenId, level)
@@ -155,15 +180,15 @@ async function main() {
             data: event,
         }
         // console.log(JSON.stringify(info, null, 4))
-        console.log('Token Rename',tokenId, 'new name', newName)
+        console.log('!Token Rename',tokenId, 'new name', newName)
         tokenId = parseInt(tokenId)
         console.log('planet renamed', tokenId, newName)
         refreshPlanet(tokenId)
     })
 }
 
+loadPlanetRankListFromFile()
 main()
-
 
 http.createServer((request, response) => {
   const { headers, method, url } = request;
