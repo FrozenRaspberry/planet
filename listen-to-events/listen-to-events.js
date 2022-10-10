@@ -103,6 +103,7 @@ async function refreshPlanet(tokenId, retry) {
 function updatePlanetRankList(tokenId, level) {
     if (planetRankList.length == 0) {
         planetRankList.push({id:tokenId, level:level})
+        savePlanetRankListToFile()
         return
     }
     index = 0
@@ -117,6 +118,7 @@ function updatePlanetRankList(tokenId, level) {
     while (index >= 0) {
         if (planetRankList[index].level > level) {
             planetRankList.splice(index+1, 0, {id:tokenId, level:level})
+            savePlanetRankListToFile()
             return
         }
         index --

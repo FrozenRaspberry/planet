@@ -14,7 +14,7 @@
 
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', 'G-8HXWPYJNEN');
+    gtag('config', 'G-3GZPQYGK87');
     </script>
     <script src="script/jquery.js"></script>
     <script src="script/bootstrap/bootstrap.bundle.min.js"></script>
@@ -22,6 +22,7 @@
     <script src="script/web3/web3.min.js"></script>
     <script src="script/ui.js"></script>
     <script src="script/rename.js"></script>
+    <script src="script/rank-list.js"></script>
     <script src="script/main-page.js"></script>
     <script src="script/mint.js"></script>
     <script src="script/metamask.js"></script>
@@ -46,11 +47,16 @@
         <!-- BREW POTION PAGE -->
         <div class="game-page" style="display: none;">
             <div class="game-column left">
-                <p class="label-text potion-title">Planet Rank List</p>
-                <div class="potion-list">
-                    <template id="potions-item-template">
-                        <img class="potion" src="img/potion/empty.png"></img>
-                    </template>
+                <div class="down-flex f-j-center planet-rank-list-group">
+                    <div class="right-flex f-j-center f-a-center planet-group rank1">
+                        <div class="label-text rank-text">Rank #1</div>
+                        <img class="planet-onlist"></img>
+                        <div class="down-flex f-a-left f-j-center">
+                            <div class="label-text name-text">Planet</div>
+                            <div class="label-text owner-text">owner.eth</div>
+                            <div class="label-text mass-text">size</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="game-column right">
