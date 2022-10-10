@@ -64,8 +64,11 @@ async function connect(auto) {
     if (accounts[0]) {
         walletStatus = WALLET_STATUS.CONNECTED;
         $("button.connect").text('Loading...')
-        userAccount = accounts[0];
-        console.log('Connected. ', userAccount);
+        userAccount = accounts[0]
+        console.log('Connected. ', userAccount)
+
+        $('div.label-text-small.account').text('Account: ' + userAccount.slice(0, 6) + '...' + userAccount.slice(-4))
+
         if (ethereum.chainId == '0x1') {
             if (env == ENV.TEST) {
                 console.error('Test mode, please switch to Goerli Testnet and try again.')
@@ -99,27 +102,8 @@ async function connect(auto) {
         userBalance = Web3.utils.fromWei(balance.toString(), 'ether')
         console.log('balance: ', userBalance)
         return { code: 0, msg: 'connected' }
-    }
-}
-
-async function getAccount() {
-    if (walletStatus == WALLET_STATUS.CONNECTED) {
-        walletStatus = WALLET_STATUS.CONNECTED;
-        userAccount = accounts[0];
-        if (ethereum.chainId == '0x1') {
-            networkName = 'ETH Mainnet';
-        } else {
-            networkName = 'Wrong Network';
-        }
-        console.log(networkName)
-        return {
-            code: 0,
-            msg: userAccount.slice(0, 6) + '...' + userAccount.slice(-4) + ' connected.'
-        }
-    }
-    return {
-        code: 1,
-        msg: "You haven't connected yet."
+    } else {
+        throw "Cannot get userAccount"
     }
 }
 
@@ -145,16 +129,62 @@ async function updateContractStatus() {
 
         p_planetBalance = gameContract.balanceOf(userAccount)
         p_planetBalance.then((r) => {
-            planetBalance = r
-            console.log('planetBalance: ', parseInt(planetBalance))
+            planetBalance = parseInt(r)
+            console.log('planetBalance: ', planetBalance)
+        })
+
+        p_playerTokenId = gameContract.tokenOfOwnerByIndex(userAccount, 0)
+        p_playerTokenId.then((r) => {
+            playerTokenId = parseInt(r)
+            console.log('playerTokenId: ', playerTokenId)
+            if (playerTokenId) {
+                p_planetLv = gameContract.levelOf(playerTokenId)
+                p_planetLv.then((r) => {
+                    playerTokenLv = parseInt(r)
+                    console.log('playerTokenLv: ', playerTokenLv)
+                })
+                p_planetSize = gameContract.sizeOf(playerTokenId)
+                p_planetSize.then((r) => {
+                    playerTokenSize = parseInt(r)
+                    console.log('playerTokenSize: ', playerTokenSize)
+                })
+                p_planetName = gameContract.nameOf(playerTokenId)
+                p_planetName.then((r) => {
+                    playerTokenName = r
+                    console.log('playerTokenName: ', playerTokenName)
+                })
+                p_planetType = gameContract.typeOf(playerTokenId)
+                p_planetType.then((r) => {
+                    playerTokenType = parseInt(r)
+                    console.log('playerTokenType: ', playerTokenType)
+                })
+                Promise.all([p_planetLv, p_planetSize, p_planetName, p_planetType]).then((values) => {
+                    showPlayerPlanet()
+                })
+            }
         })
 
         Promise.all([p_planetBalance]).then((values) => {
             switchPageStatus('game')
             if (planetBalance == 0) {
-                console.log('no planet')
+                console.log('You have no planet')
+                switchPageStatus('no-planet')
             } else {
-                console.log('have planet')
+                console.log('You have 1 planet')
+                switchPageStatus('have-planet')
+            }
+        })
+
+        Promise.all([p_maxSupply, p_totalSupply, p_status]).then((values) => {
+            if (totalSupply == maxSupply) {
+                console.log('SOLD OUT!')
+                $('button.mint').hide()
+            } else if (totalSupply < maxSupply && publicSaleStatus) {
+                $('button.mint').show()
+                $('button.mint').text('MINT (' + parseInt(maxSupply - totalSupply) + ' Left)')
+            } else {
+                console.log('Mint is not live, publicSaleStatus is', publicSaleStatus)
+                $('button.mint').hide()
             }
         })
     } else {

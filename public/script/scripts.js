@@ -13,6 +13,11 @@ const env = ENV.TEST
 // const env = ENV.PROD
 
 var userBalance = null
+var playerTokenId = null
+var playerTokenLv = null
+var playerTokenSize = null
+var playerTokenName = null
+var playerTokenType = null
 
 var gamePhase = GamePhase.PREMINT
 var gameContract = null
@@ -57,12 +62,14 @@ $(document).ready(function() {
 async function init() {
     $("button.connect").click(connect)
 
-    $(".tool-button.opensea-button").click(function (e) {
-        window.open(openSeaUrl+planetSlugName, '_blank')
-    })
-    $(".tool-button.tt-button").click(function (e) {
-        window.open('https://twitter.com/'+tHandler, '_blank')
-    })
+    $(".tool-button.opensea-button").click(()=> window.open(openSeaUrl+planetSlugName, '_blank'))
+    $(".tool-button.tt-button").click(()=> window.open('https://twitter.com/'+tHandler, '_blank'))
+
+    $("button.player-command.buy").click(()=> window.open(openSeaUrl+planetSlugName, '_blank'))
+    $("button.player-command.mint").click(mint)
+    $("button.player-command.reanme").click(rename)
+    $('button.rename-submit').click(renameSubmit)
+
     // $("button.brew").click(brew)
     // $("button.claim").click(claim)
     // $("p.brewing-text.cancel").click(cancel)
@@ -77,6 +84,8 @@ async function init() {
     //     window.open(openSeaUrl + spellSlugName, '_blank');
     // })
     ToastTemplate = $($("#toast-template").html())
+    
+
     // PotionItemTemplate = $($("#potions-item-template").html())
     // ArtifactItemTemplate = $($("#artifact-item-template").html())
     // SpellItemTemplate = $($("#spell-item-template").html())
@@ -93,6 +102,12 @@ function switchPageStatus(status) {
         console.log('switch to game status')
         $('.connect-page').hide()
         $('.game-page').show()
+    } else if (status == 'no-planet') {
+        $('div.player-command-panel.have-no-planet').show()
+        $('div.player-command-panel.have-planet').hide()
+    } else if (status == 'have-planet') {
+        $('div.player-command-panel.have-planet').show()
+        $('div.player-command-panel.have-no-planet').hide()
     } else {
         console.error('Invalid page status', status)
     }

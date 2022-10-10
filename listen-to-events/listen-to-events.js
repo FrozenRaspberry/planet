@@ -38,7 +38,13 @@ async function loadPlanetRankListFromFile() {
     }
 }
 
-async function refreshPlanet(tokenId) {
+async function refreshPlanet(tokenId, retry) {
+    if (!retry) {
+        retry = 3
+    } else if (retry == -1) {
+        console.log('!refresh reach max limit, tokenId', tokenId, retry)
+        return
+    }
     var options
     if (process.env.NEED_PROXY == '1') {
         options = {
@@ -52,7 +58,7 @@ async function refreshPlanet(tokenId) {
     }
 
     contractAddress = process.env.PLANET_CONTRACT_ADDRESS
-    console.log('opensea-update-token #', tokenId)
+    console.log('opensea-update-token #', tokenId, 'retry remains', retry)
     url = process.env.OS_API_URL + '/api/v1/asset/' + contractAddress + '/' + tokenId + '?force_update=true'
     console.log('url:', url)
     var status
@@ -61,10 +67,11 @@ async function refreshPlanet(tokenId) {
         .then((res) => {
             status = res.status;
             if (status != 200) {
-                console.log('!status not OK:', res)
-                throw('status not ok')
+                console.log('!ERR status not OK, retry remains', retry, '\n', res)
+                setTimeout(refreshPlanet(tokenId, retry - 1), 5000)
+                return
             }
-            console.log('status:', status)
+            console.log('!status ok:', status)
             // console.log('res:', res)
             return res.json()
         })
@@ -133,7 +140,7 @@ function removePlanetFromRankList(tokenId) {
     savePlanetRankListToFile()
 }
 
-async function main() {
+async function startEventListen() {
 	const planetContractAddress = process.env.PLANET_CONTRACT_ADDRESS
 	const planetContractAbi = require(process.env.PLANET_CONTRACT_ABI_FILE_NAME)
 	const provider = new ethers.providers.WebSocketProvider(process.env.ALCHEMY_WSS)
@@ -145,6 +152,10 @@ async function main() {
 			tokenId: tokenId,
 			data: event,
 		}
+        if (from == '0x0000000000000000000000000000000000000000') {
+            console.log('!Mint token', tokenId, 'to', to)
+            return
+        }
 		// console.log(JSON.stringify(info, null, 4))
         console.log('!Trasfer token',tokenId,'from', from, 'to', to)
         tokenId = parseInt(tokenId)
@@ -187,37 +198,44 @@ async function main() {
     })
 }
 
+async function startServer() {
+    http.createServer((request, response) => {
+      const { headers, method, url } = request;
+      let body = [];
+      request.on('error', (err) => {
+        console.error(err);
+      }).on('data', (chunk) => {
+        body.push(chunk);
+      }).on('end', () => {
+        body = Buffer.concat(body).toString();
+        // BEGINNING OF NEW STUFF
+
+        response.on('error', (err) => {
+          console.error(err);
+        });
+
+        response.statusCode = 200;
+        response.setHeader('Content-Type', 'application/json');
+        // Note: the 2 lines above could be replaced with this next one:
+        // response.writeHead(200, {'Content-Type': 'application/json'})
+
+        // const responseBody = { headers, method, url, body };
+        const responseBody = {planetRankList};
+
+        response.write(JSON.stringify(responseBody));
+        response.end();
+        // Note: the 2 lines above could be replaced with this next one:
+        // response.end(JSON.stringify(responseBody))
+
+        // END OF NEW STUFF
+      });
+    }).listen(8080)
+}
+
 loadPlanetRankListFromFile()
-main()
+startEventListen()
+startServer()
 
-http.createServer((request, response) => {
-  const { headers, method, url } = request;
-  let body = [];
-  request.on('error', (err) => {
-    console.error(err);
-  }).on('data', (chunk) => {
-    body.push(chunk);
-  }).on('end', () => {
-    body = Buffer.concat(body).toString();
-    // BEGINNING OF NEW STUFF
-
-    response.on('error', (err) => {
-      console.error(err);
-    });
-
-    response.statusCode = 200;
-    response.setHeader('Content-Type', 'application/json');
-    // Note: the 2 lines above could be replaced with this next one:
-    // response.writeHead(200, {'Content-Type': 'application/json'})
-
-    // const responseBody = { headers, method, url, body };
-    const responseBody = {planetRankList};
-
-    response.write(JSON.stringify(responseBody));
-    response.end();
-    // Note: the 2 lines above could be replaced with this next one:
-    // response.end(JSON.stringify(responseBody))
-
-    // END OF NEW STUFF
-  });
-}).listen(8080);
+// test refresh
+console.log('!Test refresh token')
+refreshPlanet(1)

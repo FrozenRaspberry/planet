@@ -1,6 +1,9 @@
 function showToastMessage(head, small, body, time) {
 	if (time) {
-		time = 3000
+		time = 5000
+	}
+	if (head=='') {
+		head = 'Merging Galaxy'
 	}
 	var toast = ToastTemplate.clone()
 	toast.find('strong').text(head)
@@ -17,5 +20,5 @@ function showToastMessage(head, small, body, time) {
 }
 
 function showErrorMessage(msg) {
-	showToastMessage('Error', '', msg, 3000)
+	showToastMessage('Error', '', msg, 5000)
 }

@@ -36,9 +36,19 @@ body::-webkit-scrollbar {
     padding: 0;
 }
 
+.title-text {
+    color: #ffffff;
+    font-size: 70px;
+}
+
 .label-text {
     color: #ffffff;
     font-size: 60px;
+}
+
+.label-text-small {
+    color: #ffffff;
+    font-size: 38px;
 }
 
 .label-text-light {
@@ -82,15 +92,12 @@ img.tool-button {
     height: 70px;
 }
 
-
 div.menu-button-group {
     display: flex;
     justify-content: center;
     cursor: pointer;
 }
 
-p.menu-spell-mint {
-}
 
 .mint-text {
     color: #132243;
@@ -112,6 +119,8 @@ button {
     background-color: #000000;
     border: 2px solid #cfcfcf;
     transition-duration: 0.4s;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 button:hover {
@@ -125,65 +134,15 @@ button.connect {
     font-size: 66px;
 }
 
-button.mint {
-    width: 259px;
-    height: 97px;
-    font-size: 66px;
+button.player-command {
+    width: 370px;
+    height: 52px;
+    font-size: 48px;
 }
 
-button.brew {
-    width: 269px;
-    height: 76px;
-    font-size: 66px;
-}
-
-button.claim {
-    width: 269px;
-    height: 76px;
-    font-size: 66px;
-}
-
-button.activate {
-    width: 269px;
-    height: 76px;
-    font-size: 66px;
-}
-
-button.craft {
-    width: 427px;
-    height: 76px;
-    font-size: 45px;
-}
-
-button.upgrade {
-    width: 420px;
-    height: 76px;
-    font-size: 42px;
-}
 
 div.connect-page {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-div.premint-page {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-div.mint-page {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-div.soldout-page {
-    display: inline-flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
@@ -195,13 +154,32 @@ div.game-page {
     width: 100%;
 }
 
-div.spell-page {
+div.game-column {
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
+div.game-column.left {
+    flex: 60%;
+}
+
+div.game-column.right {
+    flex: 40%;
+}
+
+div.player-command-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.player-planet-name {
+    font-size: 70px;
+    color: #ffffff;
+}
 
 div.game-column {
     display: flex;
@@ -210,6 +188,42 @@ div.game-column {
     align-items: center;
     justify-content: center;
 }
+
+
+div.down-flex {
+    display: flex;
+    flex-direction: column;
+}
+
+div.right-flex {
+    display: flex;
+    flex-direction: row;
+}
+
+div.f-a-center {
+    align-items: center;
+}
+
+div.f-a-left {
+    align-items: left;
+}
+
+div.f-j-center {
+    justify-content: center;
+}
+
+
+
+
+div.spell-page {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+
+
 
 div.potion-list {
     display: flex;
@@ -436,4 +450,32 @@ svg.ready {
 .toast {
     max-width: 30vw;
     flex-basis: auto;
+}
+
+/*modeal css*/
+.modal-content {
+    font-size: 48px;
+    color: #cfcfcf;
+    background-color: #000000;
+    border: 2px solid #cfcfcf;
+}
+
+.modal-title {
+    font-size: 48px;
+}
+
+.modal-footer {
+    border: 0px;
+}
+
+.modal-header {
+    border: 0px;
+}
+
+input {
+    color: #cfcfcf;
+    background-color: #000000;
+    border: 2px solid #cfcfcf;
+    font-size: 48px;
+    width: 100%;
 }

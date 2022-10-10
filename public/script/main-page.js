@@ -1,18 +1,20 @@
-async function showBrew() {
-    console.log('showBrew')
-	window.location.href = '/#potion'
-    $(".connect-page").hide()
-    $(".spell-page").hide()
-    $(".game-page").show()
-    $("body").css('background-image', 'url("../img/bowl-bg.png")')
-    $(".menu-brew").css('text-decoration', 'underline')
-    $(".menu-spell").css('text-decoration', '')
-    gamePhase = GamePhase.GAME
-    console.log('GamePhase: GAME')
-    // userAccount = '0x928c2909847B884ba5Dd473568De6382b028F7b8' //test chosen one
-    updateArtifactList()
-    await updatePotionList()
-    updateBrewStatus()
+async function showPlayerPlanet() {
+	if (playerTokenLv == 0) {
+		$('img.player-planet').attr('src', 'img/planet/' + playerTokenType + '-' + playerTokenLv + '-' + (playerTokenId % 3 + 1) + '.gif')
+	} else {
+		$('img.player-planet').attr('src', 'img/planet/' + playerTokenType + '-' + playerTokenLv + '.gif')		
+	}
+	$('div.player-planet-lv').text('level: ' + playerTokenLv) 
+	$('div.player-planet-size').text('Mass: ' + playerTokenSize)
+	$('div.player-planet-name').text(getPlayerPlanetName()) 
+}
+
+function getPlayerPlanetName() {
+	if (playerTokenName == '') {
+		return 'Planet #' + playerTokenId
+	} else {
+		return playerTokenName + ' #' + playerTokenId
+	}
 }
 
 async function updatePotionList(retry) {

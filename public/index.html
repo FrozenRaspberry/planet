@@ -20,9 +20,10 @@
     <script src="script/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="script/ethers/ethers-5.4.umd.min.js" type="application/javascript"></script>
     <script src="script/web3/web3.min.js"></script>
-    <script src="script/brew.js"></script>
-    <script src="script/spell.js"></script>
     <script src="script/ui.js"></script>
+    <script src="script/rename.js"></script>
+    <script src="script/main-page.js"></script>
+    <script src="script/mint.js"></script>
     <script src="script/metamask.js"></script>
     <script src="script/scripts.js"></script>
 </head>
@@ -34,7 +35,7 @@
     </div>
     <div class="body-head">
         <div class="menu-button-group mt-3">
-            <p class="label-text-light mr-5 menu-brew">Merging Galaxy</p>
+            <p class=".title-text">Merging Galaxy</p>
         </div>
     </div>
     <div class="body-mid">
@@ -44,42 +45,38 @@
         </div>
         <!-- BREW POTION PAGE -->
         <div class="game-page" style="display: none;">
-            <div class="game-column">
-                <p class="label-text potion-title">Your Potions</p>
+            <div class="game-column left">
+                <p class="label-text potion-title">Planet Rank List</p>
                 <div class="potion-list">
                     <template id="potions-item-template">
                         <img class="potion" src="img/potion/empty.png"></img>
                     </template>
                 </div>
             </div>
-<!--             <div class="game-column">
-                <div class="brew-loading label-text-light">Loading...</div>
-                <div class="brew" style="display: none;">
-                    <p class="label-text-light brew-text title">Select Your Potion<br />And Start Brewing</p>
-                    <div class="potion ingredient">
-                    </div>
-                    <div class="artifact-ingredient" style="display: none;">
-                        <img class="artifact" src="img/artifact-border-img.png"></img>
-                    </div>
-                    <p class="label-text-light brew-text prompt"></p>
-                    <button class="brew mt-5" style="display: none;">Brew</button>
+            <div class="game-column right">
+                <!-- NO PLANET -->
+                <div class="player-command-panel have-no-planet" style="display:none">
+                    <div class="label-text mb-5">You don't have any planet</div>
+                    <button class="mint player-command mb-5" style="display:none;">MINT</button>
+                    <button class="buy player-command mb-5">BUY A PLANET</button>
+                    <button class="revive player-command mb-5">REVIVE A 'DEAD' PLANET</button>
+                    <div class="label-text-small account mt-3 mb-5">Account</div>
                 </div>
-                <div class="brewing" style="display:none;">
-                    <p class="label-text-light brewing-text title">Brewing...</p>
-                    <div class="brewing-ingredient">
+                <!-- HAVE PLANET -->
+                <div class="player-command-panel have-planet" style="display:none">
+                    <div class="label-text-small mb-2">Your Planet</div>
+                    <div class="player-planet-group right-flex mb-1">
+                        <img class="player-planet mb-1"></img>
+                        <div class="down-flex f-a-left f-j-center player-planet-text-group">
+                            <div class="label-text-small player-planet-lv">Level</div>
+                            <div class="label-text-small player-planet-size">Mass</div>
+                        </div>
                     </div>
-                    <p class="label-text-light brewing-text prompt"></p>
-                    <button class="claim mt-5" style="display: none;">Claim</button>
-                    <p class="label-text-light brewing-text cancel mt-4">Cancel Brewing</p>
-                </div>
-            </div> -->
-            <div class="game-column player-planet">
-                <div class="have-no-planet">
-                    NO PLANET
-                </div>
-                <div class="have-planet">
-                    <p class="label-text planet-title">Your Planet</p>
-                    HAVE PLANET
+                    <div class="player-planet-name mb-2">Planet #</div>
+                    <button class="reanme player-command mb-5">NAME YOUR PLANET</button>
+                    <button class="buy player-command mb-5">BUY & MERGE</button>
+                    <button class="rule player-command mb-5">RULE</button>
+                    <div class="label-text-small account mt-3 mb-5">Account</div>
                 </div>
             </div>
         </div>
@@ -103,6 +100,26 @@
             </div>
         </div>
     </template>
+    <div class="modal fade" id="nameInputModal" tabindex="-1" role="dialog" aria-labelledby="nameInputModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="nameInputModalLabel">NAME YOUR OWN PLANET</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <input class="planet-name-input pl-3" type="text">
+            <div class="label-text-small rename-price"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="" data-dismiss="modal">CANCEL</button>
+            <button type="button" class="rename-submit">RENAME</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </body>
 
 </html>
