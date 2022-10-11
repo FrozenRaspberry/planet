@@ -143,33 +143,31 @@ async function updateContractStatus() {
                 p_playerTokenId.then((r) => {
                     playerTokenId = parseInt(r)
                     console.log('playerTokenId: ', playerTokenId)
-                    if (playerTokenId) {
-                        p_planetLv = gameContract.levelOf(playerTokenId)
-                        p_planetLv.then((r) => {
-                            playerTokenLv = parseInt(r)
-                            console.log('playerTokenLv: ', playerTokenLv)
-                        })
-                        p_planetSize = gameContract.sizeOf(playerTokenId)
-                        p_planetSize.then((r) => {
-                            playerTokenSize = parseInt(r)
-                            console.log('playerTokenSize: ', playerTokenSize)
-                        })
-                        p_planetName = gameContract.nameOf(playerTokenId)
-                        p_planetName.then((r) => {
-                            playerTokenName = r
-                            console.log('playerTokenName: ', playerTokenName)
-                        })
-                        p_planetType = gameContract.typeOf(playerTokenId)
-                        p_planetType.then((r) => {
-                            playerTokenType = parseInt(r)
-                            console.log('playerTokenType: ', playerTokenType)
-                        })
-                        Promise.all([p_planetLv, p_planetSize, p_planetName, p_planetType]).then((values) => {
-                            console.log('You have 1 planet')
-                            switchPageStatus('have-planet')
-                            showPlayerPlanet()
-                        })
-                    }
+                    p_planetLv = gameContract.levelOf(playerTokenId)
+                    p_planetLv.then((r) => {
+                        playerTokenLv = parseInt(r)
+                        console.log('playerTokenLv: ', playerTokenLv)
+                    })
+                    p_planetSize = gameContract.sizeOf(playerTokenId)
+                    p_planetSize.then((r) => {
+                        playerTokenSize = parseInt(r)
+                        console.log('playerTokenSize: ', playerTokenSize)
+                    })
+                    p_planetName = gameContract.nameOf(playerTokenId)
+                    p_planetName.then((r) => {
+                        playerTokenName = r
+                        console.log('playerTokenName: ', playerTokenName)
+                    })
+                    p_planetType = gameContract.typeOf(playerTokenId)
+                    p_planetType.then((r) => {
+                        playerTokenType = parseInt(r)
+                        console.log('playerTokenType: ', playerTokenType)
+                    })
+                    Promise.all([p_planetLv, p_planetSize, p_planetName, p_planetType]).then((values) => {
+                        console.log('You have 1 planet')
+                        switchPageStatus('have-planet')
+                        showPlayerPlanet()
+                    })
                 })
             }
         })

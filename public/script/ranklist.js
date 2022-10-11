@@ -6,6 +6,10 @@ async function updatePlanetRankList() {
 		throw 'get rank list error'
 	}
 	console.log('Rank List Loaded', planetRankList)
+	if (planetRankList.length == 0) {
+		$('.planet-rank-list-group').html('<p class="label-text">Rank list is empty.<br>Merge & Level up!<br>Be the first one on list.</p>') 
+		return
+	}
 	rankLen = Math.min(planetRankList.length, 4)
 	for (i=0; i<rankLen; i++) {
 		rank = parseInt(i) + 1

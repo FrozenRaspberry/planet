@@ -40,8 +40,8 @@ async function loadPlanetRankListFromFile() {
 
 async function refreshPlanet(tokenId, retry) {
     if (!retry) {
-        retry = 3
-    } else if (retry == -1) {
+        retry = 1
+    } else if (retry >= 4) {
         console.log('!error refresh Fail reach max limit, tokenId', tokenId, retry)
         return
     }
@@ -68,7 +68,7 @@ async function refreshPlanet(tokenId, retry) {
             status = res.status;
             if (status != 200) {
                 console.log('!ERR status not OK, retry remains', retry, '\n', res)
-                setTimeout(refreshPlanet(tokenId, retry - 1), 5000)
+                setTimeout(refreshPlanet(tokenId, retry + 1), 5000)
                 return
             }
             console.log('!status ok:', status)

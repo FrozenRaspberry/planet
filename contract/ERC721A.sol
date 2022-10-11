@@ -580,14 +580,14 @@ contract ERC721A is
         oldLevel = levelOf(fromId);
         setSizeOf(fromId, sizeOf(fromId) + sizeOf(toId));
         _burn(toId);
-        _nameDataOfToken[toId] = string(abi.encodePacked("Planet #", toString(fromId), " absorbed this planet"));
+        _nameDataOfToken[toId] = string(abi.encodePacked("Planet #", toString(fromId), " absorbed "));
         newLevel = levelOf(fromId);
         targetId = fromId;
       } else if (levelOf(fromId) <= levelOf(toId)) {
         oldLevel = levelOf(toId);
         setSizeOf(toId, sizeOf(fromId) + sizeOf(toId));
         _burn(fromId);
-        _nameDataOfToken[fromId] = string(abi.encodePacked("Planet #", toString(toId), " absorbed this planet"));
+        _nameDataOfToken[fromId] = string(abi.encodePacked("Planet #", toString(toId), " absorbed "));
         newLevel = levelOf(toId);
         targetId = toId;
       }
