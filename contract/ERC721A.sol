@@ -67,6 +67,7 @@ contract ERC721A is
 
   // Custom Attr
   event LevelUp(uint256 tokenId, uint256 level, address owner);
+  event Absorb(uint256 tokenIdA, uint256 tokenIdB, uint256 size);
   event Rename(uint256 tokenId, string newName);
 
   uint256 private _numberBurnt;
@@ -578,14 +579,18 @@ contract ERC721A is
       uint targetId;
       if (levelOf(fromId) > levelOf(toId)) {
         oldLevel = levelOf(fromId);
-        setSizeOf(fromId, sizeOf(fromId) + sizeOf(toId));
+        uint256 newSize = sizeOf(fromId) + sizeOf(toId);
+        setSizeOf(fromId, newSize);
+        emit Absorb(fromId, toId, newSize);
         _burn(toId);
         _nameDataOfToken[toId] = string(abi.encodePacked("Planet #", toString(fromId), " absorbed "));
         newLevel = levelOf(fromId);
         targetId = fromId;
       } else if (levelOf(fromId) <= levelOf(toId)) {
         oldLevel = levelOf(toId);
+        uint256 newSize = sizeOf(fromId) + sizeOf(toId);
         setSizeOf(toId, sizeOf(fromId) + sizeOf(toId));
+        emit Absorb(toId, fromId, newSize);
         _burn(fromId);
         _nameDataOfToken[fromId] = string(abi.encodePacked("Planet #", toString(toId), " absorbed "));
         newLevel = levelOf(toId);

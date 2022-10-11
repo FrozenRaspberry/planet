@@ -8,7 +8,7 @@ import "./ERC721A.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract Planet is Ownable, ERC721A, ReentrancyGuard {
-    uint public maxSupply = 1666;
+    uint public maxSupply = 3666;
     constructor(
     ) ERC721A("PLANET", "Merging Galaxy", 1, maxSupply) {}
 
@@ -95,7 +95,7 @@ contract Planet is Ownable, ERC721A, ReentrancyGuard {
     // uint256 public publicPrice = 0.003000 ether;
     uint256 public amountForPublicSale = maxSupply;
     // per mint public sale limitation
-    uint256 public immutable publicSalePerMint = 10;
+    uint256 public immutable publicSalePerMint = 1;
 
     function publicSaleMint(uint256 quantity) external payable {
         require(

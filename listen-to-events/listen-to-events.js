@@ -83,8 +83,6 @@ async function refreshPlanet(tokenId, retry) {
             console.log('image_original_url:',response.image_original_url)
             console.log('address:',response.asset_contract.address)
             console.log('tokenId:', response.token_id)
-            console.log('traits:', response.traits)
-            // console.log('status', status)
         })
         .catch((err) => {
             status = 500
@@ -100,9 +98,9 @@ async function refreshPlanet(tokenId, retry) {
     }
 }
 
-function updatePlanetRankList(tokenId, level) {
+function updatePlanetRankList(tokenId, size) {
     if (planetRankList.length == 0) {
-        planetRankList.push({id:tokenId, level:level})
+        planetRankList.push({id:tokenId, size:size})
         savePlanetRankListToFile()
         return
     }
@@ -116,14 +114,14 @@ function updatePlanetRankList(tokenId, level) {
     }
     index = planetRankList.length - 1
     while (index >= 0) {
-        if (planetRankList[index].level > level) {
-            planetRankList.splice(index+1, 0, {id:tokenId, level:level})
+        if (planetRankList[index].size > size) {
+            planetRankList.splice(index+1, 0, {id:tokenId, size:size})
             savePlanetRankListToFile()
             return
         }
         index --
     }
-    planetRankList.splice(0, 0, {id:tokenId, level:level})
+    planetRankList.splice(0, 0, {id:tokenId, size:size})
     savePlanetRankListToFile()
 }
 
@@ -147,6 +145,7 @@ async function startEventListen() {
 	const planetContractAbi = require(process.env.PLANET_CONTRACT_ABI_FILE_NAME)
 	const provider = new ethers.providers.WebSocketProvider(process.env.ALCHEMY_WSS)
 	const contract = new ethers.Contract(planetContractAddress, planetContractAbi, provider)
+
 	contract.on("Transfer", (from, to, tokenId, event) => {
 		info = {
 			from: from,
@@ -158,16 +157,34 @@ async function startEventListen() {
             console.log('!Mint token', tokenId, 'to', to)
             return
         }
-		// console.log(JSON.stringify(info, null, 4))
-        console.log('!Trasfer token',tokenId,'from', from, 'to', to)
         tokenId = parseInt(tokenId)
-		console.log('refresh planet', tokenId)
-		refreshPlanet(tokenId)
-        if (to == '0x000000000000000000000000000000000000dEaD') {
-            removePlanetFromRankList(tokenId)
-            console.log('current planet list:', planetRankList)
-        }
+        console.log('!Trasfer token',tokenId,'from', from, 'to', to)        
+		// console.log('refresh planet', tokenId)
+		// refreshPlanet(tokenId)
+  //       if (to == '0x000000000000000000000000000000000000dEaD') {
+  //           removePlanetFromRankList(tokenId)
+  //           console.log('current planet list:', planetRankList)
+  //       }
 	})
+
+    contract.on("Absorb", (tokenIdA, tokenIdB, size, event) => {
+        info = {
+            tokenIdA: tokenIdA,
+            tokenIdB: tokenIdB,
+            size: size,
+            data: event,
+        }
+        tokenIdA = parseInt(tokenIdA)
+        tokenIdB = parseInt(tokenIdB)
+        size = parseInt(size)
+
+        console.log('!Absord ',tokenIdA,' absorb ', tokenIdB, ' grow to size ', size)
+        console.log('refresh planet', tokenIdA, tokenIdB)
+        refreshPlanet(tokenIdA)
+        setTimeout(refreshPlanet(tokenIdB), 1)        
+        removePlanetFromRankList(tokenIdB)
+        updatePlanetRankList(tokenId, size)
+    })
 
 	contract.on("LevelUp", (tokenId, level, owner, event) => {
 		info = {
@@ -177,13 +194,9 @@ async function startEventListen() {
 			data: event,
 		}
 		// console.log(JSON.stringify(info, null, 4))
-        console.log('!Token LvUp',tokenId, 'new level', level, 'owner', owner)
         tokenId = parseInt(tokenId)
         level = parseInt(level)
-		console.log('refresh planet', tokenId)
-		refreshPlanet(tokenId)
-        updatePlanetRankList(tokenId, level)
-        console.log('current planet list:', planetRankList)
+        console.log('!Token LvUp',tokenId, 'new level', level, 'owner', owner)
 	})
 
     contract.on("Rename", (tokenId, newName, event) => {
@@ -192,10 +205,8 @@ async function startEventListen() {
             newName: newName,
             data: event,
         }
-        // console.log(JSON.stringify(info, null, 4))
-        console.log('!Token Rename',tokenId, 'new name', newName)
         tokenId = parseInt(tokenId)
-        console.log('planet renamed', tokenId, newName)
+        console.log('!Token Rename',tokenId, 'new name', newName)
         refreshPlanet(tokenId)
     })
 }
@@ -240,4 +251,4 @@ startServer()
 
 // test refresh
 console.log('!Test refresh token')
-refreshPlanet(1)
+refreshPlanet(0)

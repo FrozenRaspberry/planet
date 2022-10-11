@@ -13,7 +13,7 @@ async function updatePlanetRankList() {
 	rankLen = Math.min(planetRankList.length, 4)
 	for (i=0; i<rankLen; i++) {
 		rank = parseInt(i) + 1
-		updatePlanetAtRank(rank, planetRankList[i].id, planetRankList[i].level)
+		updatePlanetAtRank(rank, planetRankList[i].id, planetRankList[i].size)
 	}
 }
 
@@ -45,9 +45,9 @@ async function fetchRankList(retry) {
 	return rankListResult
 }
 
-async function updatePlanetAtRank(rank, tokenId, refLevel) {
+async function updatePlanetAtRank(rank, tokenId, refSize) {
 	//Load Planet Data
-	console.log('load planet at rank', rank, 'id', tokenId, 'ref level is', refLevel)
+	console.log('load planet at rank', rank, 'id', tokenId, 'ref size is', refSize)
 	var planetLv, planetType, planetName, planetSize, planetOwnerName, planetOwnerAddress
     p_planetLv = gameContract.levelOf(tokenId)
     p_planetLv.then((r) => {
@@ -105,6 +105,6 @@ function displayPlanet(rank, planetName, planetLv, planetOwnerName, planetSize, 
 	}
 	currentPlanet.find('div.name-text').text(planetName)
 	currentPlanet.find('div.owner-text').text('Owner: ' + planetOwnerName)
-	currentPlanet.find('div.mass-text').text('Mass: ' + planetSize.toString())
+	currentPlanet.find('div.mass-text').text('Level: '+ planetLv.toString() + '   Mass: ' + planetSize.toString())
 	currentPlanet.show()
 }
