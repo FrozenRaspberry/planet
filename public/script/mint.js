@@ -20,7 +20,7 @@ async function mint(s) {
         $('button.mint').prop( "disabled", true )
         tx = await gameContract.publicSaleMint(mintNum)
     } catch (e) {
-        $('button.mint').text('MINT (' + parseInt(maxSupply - totalSupply) + ' Left)')
+        $('button.mint').text('FREE MINT (' + parseInt(maxSupply - totalSupply) + ' Left)')
         $('button.mint').prop( "disabled", false )
         if (e.code == 4001) {
             showToastMessage('Mint Alert', '', 'You rejected the transaction.')

@@ -18,5 +18,5 @@ function getPlayerPlanetName() {
 }
 
 async function rule() {
-	console.log('rule')
+	$('#ruleModal').modal('toggle')
 }

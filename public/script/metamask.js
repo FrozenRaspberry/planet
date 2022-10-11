@@ -180,7 +180,7 @@ async function updateContractStatus() {
                 $('button.mint').hide()
             } else if (totalSupply < maxSupply && publicSaleStatus) {
                 $('button.mint').show()
-                $('button.mint').text('MINT (' + parseInt(maxSupply - totalSupply) + ' Left)')
+                $('button.mint').text('FREE MINT (' + parseInt(maxSupply - totalSupply) + ' Left)')
             } else {
                 console.log('Mint is not live, publicSaleStatus is', publicSaleStatus)
                 $('button.mint').hide()
