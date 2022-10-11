@@ -68,7 +68,7 @@ async function refreshPlanet(tokenId, retry) {
             status = res.status;
             if (status != 200) {
                 console.log('!ERR status not OK, retry remains', retry, '\n', res)
-                setTimeout(refreshPlanet(tokenId, retry + 1), 5000)
+                setTimeout(()=>{ refreshPlanet(tokenId, retry + 1)}, 5000)     
                 return
             }
             console.log('!status ok:', status)
@@ -175,7 +175,7 @@ async function startEventListen() {
         console.log('!Absord ',tokenIdA,' absorb ', tokenIdB, ' grow to size ', size)
         console.log('refresh planet', tokenIdA, tokenIdB)
         refreshPlanet(tokenIdA)
-        setTimeout(refreshPlanet.bind(tokenIdB), 1000)        
+        setTimeout(()=>{ refreshPlanet(tokenIdB) }, 2000)        
         removePlanetFromRankList(tokenIdB)
         updatePlanetRankList(tokenIdA, size)
     })
