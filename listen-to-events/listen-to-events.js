@@ -158,13 +158,7 @@ async function startEventListen() {
             return
         }
         tokenId = parseInt(tokenId)
-        console.log('!Trasfer token',tokenId,'from', from, 'to', to)        
-		// console.log('refresh planet', tokenId)
-		// refreshPlanet(tokenId)
-  //       if (to == '0x000000000000000000000000000000000000dEaD') {
-  //           removePlanetFromRankList(tokenId)
-  //           console.log('current planet list:', planetRankList)
-  //       }
+        console.log('!Trasfer token',tokenId,'from', from, 'to', to)
 	})
 
     contract.on("Absorb", (tokenIdA, tokenIdB, size, event) => {
@@ -181,9 +175,9 @@ async function startEventListen() {
         console.log('!Absord ',tokenIdA,' absorb ', tokenIdB, ' grow to size ', size)
         console.log('refresh planet', tokenIdA, tokenIdB)
         refreshPlanet(tokenIdA)
-        setTimeout(refreshPlanet(tokenIdB), 1)        
+        setTimeout(refreshPlanet.bind(tokenIdB), 1000)        
         removePlanetFromRankList(tokenIdB)
-        updatePlanetRankList(tokenId, size)
+        updatePlanetRankList(tokenIdA, size)
     })
 
 	contract.on("LevelUp", (tokenId, level, owner, event) => {
