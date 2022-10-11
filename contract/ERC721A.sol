@@ -82,7 +82,7 @@ contract ERC721A is
     require(balanceOf(msg.sender) == 1, "You don't own any planet.");
     uint256 tokenId = tokenOfOwnerByIndex(msg.sender,0);
 
-    require(msg.value >= 0.01 ether * levelOf(tokenId), string(abi.encodePacked("Rename a Lv",toString(levelOf(tokenId))," planet requires 0.0", toString((levelOf(tokenId)))," ether"))); //TEST
+    require(msg.value >= 0.01 ether * levelOf(tokenId), string(abi.encodePacked("Rename a Lv",toString(levelOf(tokenId))," planet requires 0.0", toString((levelOf(tokenId)))," ether")));
     _nameDataOfToken[tokenOfOwnerByIndex(msg.sender,0)] = targetName;
     emit Rename(tokenOfOwnerByIndex(msg.sender,0), targetName);
   }
@@ -168,7 +168,7 @@ contract ERC721A is
   ) public payable {
     require(_exists(tokenId), "This planet does not exist.");
     require(ownerOf(tokenId) == address(0xdead), "This planet is not dead yet.");
-    require(msg.value >= 0.01 ether * sizeOf(tokenId), string(abi.encodePacked("Revive a Lv",toString(sizeOf(tokenId))," planet requires ", toString((sizeOf(tokenId))),"/100 ether"))); //TEST
+    require(msg.value >= 0.004 ether * sizeOf(tokenId), string(abi.encodePacked("Revive a planet with size ",toString(sizeOf(tokenId))," requires ", toString((sizeOf(tokenId))),"*0.004 ether")));
     require(balanceOf(msg.sender) == 0, "You can only own 1 planet.");
     address from = address(0xdead);
     address to = msg.sender;
@@ -579,7 +579,6 @@ contract ERC721A is
       if (levelOf(fromId) > levelOf(toId)) {
         oldLevel = levelOf(fromId);
         setSizeOf(fromId, sizeOf(fromId) + sizeOf(toId));
-        _nameDataOfToken[toId] = string(abi.encodePacked("(Merged into Planet #", toString(fromId), ") "));
         _burn(toId);
         _nameDataOfToken[toId] = string(abi.encodePacked("Planet #", toString(fromId), " absorbed this planet"));
         newLevel = levelOf(fromId);
@@ -587,7 +586,6 @@ contract ERC721A is
       } else if (levelOf(fromId) <= levelOf(toId)) {
         oldLevel = levelOf(toId);
         setSizeOf(toId, sizeOf(fromId) + sizeOf(toId));
-        _nameDataOfToken[fromId] = string(abi.encodePacked("(Merged into Planet #", toString(toId), ") "));
         _burn(fromId);
         _nameDataOfToken[fromId] = string(abi.encodePacked("Planet #", toString(toId), " absorbed this planet"));
         newLevel = levelOf(toId);
