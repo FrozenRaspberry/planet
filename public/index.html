@@ -8,21 +8,22 @@
     <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="css/style.css">
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8HXWPYJNEN"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-3GZPQYGK87"></script>
     <script>
     window.dataLayer = window.dataLayer || [];
 
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
+
     gtag('config', 'G-3GZPQYGK87');
     </script>
     <script src="script/jquery.js"></script>
+    <script src="script/ranklist.js"></script>
     <script src="script/bootstrap/bootstrap.bundle.min.js"></script>
     <script src="script/ethers/ethers-5.4.umd.min.js" type="application/javascript"></script>
     <script src="script/web3/web3.min.js"></script>
     <script src="script/ui.js"></script>
     <script src="script/rename.js"></script>
-    <script src="script/rank-list.js"></script>
     <script src="script/main-page.js"></script>
     <script src="script/mint.js"></script>
     <script src="script/metamask.js"></script>
@@ -36,7 +37,7 @@
     </div>
     <div class="body-head">
         <div class="menu-button-group mt-3">
-            <p class=".title-text">Merging Galaxy</p>
+            <p class="title-text">Merging Galaxy</p>
         </div>
     </div>
     <div class="body-mid">
@@ -48,15 +49,17 @@
         <div class="game-page" style="display: none;">
             <div class="game-column left">
                 <div class="down-flex f-j-center planet-rank-list-group">
-                    <div class="right-flex f-j-center f-a-center planet-group rank1">
-                        <div class="label-text rank-text">Rank #1</div>
-                        <img class="planet-onlist"></img>
-                        <div class="down-flex f-a-left f-j-center">
-                            <div class="label-text name-text">Planet</div>
-                            <div class="label-text owner-text">owner.eth</div>
-                            <div class="label-text mass-text">size</div>
+                    <template id="planet-template">
+                        <div class="right-flex f-j-center f-a-center planet-group" style="display:none;">
+                            <div class="label-text rank-text">Rank #1</div>
+                            <img class="planet-onlist"></img>
+                            <div class="down-flex f-a-left f-j-center">
+                                <div class="label-text cozy-text name-text">Planet</div>
+                                <div class="label-text-small cozy-text-small owner-text">Owner</div>
+                                <div class="label-text-small cozy-text-small mass-text">Mass</div>
+                            </div>
                         </div>
-                    </div>
+                    </template>
                 </div>
             </div>
             <div class="game-column right">
@@ -65,7 +68,7 @@
                     <div class="label-text mb-5">You don't have any planet</div>
                     <button class="mint player-command mb-5" style="display:none;">MINT</button>
                     <button class="buy player-command mb-5">BUY A PLANET</button>
-                    <button class="revive player-command mb-5">REVIVE A 'DEAD' PLANET</button>
+                    <!-- <button class="revive player-command mb-5">REVIVE A 'DEAD' PLANET</button> -->
                     <div class="label-text-small account mt-3 mb-5">Account</div>
                 </div>
                 <!-- HAVE PLANET -->
@@ -107,24 +110,24 @@
         </div>
     </template>
     <div class="modal fade" id="nameInputModal" tabindex="-1" role="dialog" aria-labelledby="nameInputModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="nameInputModalLabel">NAME YOUR OWN PLANET</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <input class="planet-name-input pl-3" type="text">
-            <div class="label-text-small rename-price"></div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="" data-dismiss="modal">CANCEL</button>
-            <button type="button" class="rename-submit">RENAME</button>
-          </div>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="nameInputModalLabel">NAME YOUR OWN PLANET</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input class="planet-name-input pl-3" type="text">
+                    <div class="label-text-small rename-price"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="" data-dismiss="modal">CANCEL</button>
+                    <button type="button" class="rename-submit">RENAME</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 </body>
 

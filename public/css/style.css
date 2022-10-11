@@ -46,9 +46,17 @@ body::-webkit-scrollbar {
     font-size: 60px;
 }
 
+.cozy-text-small {
+    line-height: 90%;
+}
+
 .label-text-small {
     color: #ffffff;
     font-size: 38px;
+}
+
+.cozy-text-small {
+    line-height: 80%;
 }
 
 .label-text-light {
@@ -213,210 +221,16 @@ div.f-j-center {
 }
 
 
-
-
-div.spell-page {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
+img.planet-onlist {
+    width: 200px;
+    height: 200px;
 }
 
-
-
-
-div.potion-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-height: 60vh;
-    overflow: scroll;
+img.player-planet {
+    width: 240px;
+    height: 240px;
 }
 
-div.potion-list::-webkit-scrollbar {
-    display: none;
-}
-
-img.potion {
-    width: 80px;
-    height: 80px;
-    margin: 10px;
-}
-
-div.artifact-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-height: 60vh;
-    overflow: scroll;
-}
-
-div.artifact-list::-webkit-scrollbar {
-    display: none;
-}
-
-
-img.artifact {
-    width: 80px;
-    height: 80px;
-    margin: 10px;
-}
-
-div.brew {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-div.ingredient {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-.brew-text {
-    text-align: center;
-}
-
-div.brewing-ingredient {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-.brewing-text {
-    text-align: center;
-}
-
-
-p.cancel {
-    font-size: 35px;
-    cursor: pointer;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-div.game-column-craft {
-    display: flex;
-    flex: 33.33%;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100%;
-    background-image: url("../img/circle-bg.png");
-}
-
-div.craft-loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-div.craft-activate-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-div.craft-idle-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1
-}
-
-div.craft-claim-page {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1
-}
-
-div.craft-row-top {
-    flex-grow: 1
-}
-
-div.craft-row-mid {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    justify-content: center;
-    flex-grow: 2
-}
-
-div.craft-potion-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    flex-grow: 1
-}
-
-div.craft-result-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1
-}
-
-div.craft-spell-col {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    flex-grow: 1
-}
-
-div.craft-row-bottom {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-div.spell-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-height: 60vh;
-    overflow: scroll;
-}
-
-div.spell-list::-webkit-scrollbar {
-    display: none;
-}
-
-img.spell {
-    width: 80px;
-    height: 80px;
-    margin: 10px;
-}
-
-div.spell-big-container {
-    position: relative;
-    width: 110px;
-    height: 110px;
-}
-
-img.spell-big {
-    width: 110px;
-    height: 110px;
-    margin: 10px;
-}
 
 
 @keyframes glow {

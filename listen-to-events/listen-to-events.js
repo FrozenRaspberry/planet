@@ -42,7 +42,7 @@ async function refreshPlanet(tokenId, retry) {
     if (!retry) {
         retry = 3
     } else if (retry == -1) {
-        console.log('!refresh reach max limit, tokenId', tokenId, retry)
+        console.log('!error refresh Fail reach max limit, tokenId', tokenId, retry)
         return
     }
     var options
