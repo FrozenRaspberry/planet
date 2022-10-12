@@ -153,11 +153,14 @@ async function startEventListen() {
 			tokenId: tokenId,
 			data: event,
 		}
+        tokenId = parseInt(tokenId)
         if (from == '0x0000000000000000000000000000000000000000') {
             console.log('!Mint token', tokenId, 'to', to)
+            if (planetRankList.length < 5) {
+                updatePlanetRankList(tokenId, 1)
+            }
             return
         }
-        tokenId = parseInt(tokenId)
         console.log('!Trasfer token',tokenId,'from', from, 'to', to)
 	})
 
