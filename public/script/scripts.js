@@ -51,7 +51,8 @@ if (env == ENV.TEST) {
     commonFetchUrl = '/.netlify/functions/common-fetch'
     rankListUrl = 'protocol=http&url=149.28.139.83&port=8080'
 } else {
-    console.log('*** PROD ENV ***')
+    // console.log('*** PROD ENV ***')
+    console.log('Greetings.')
     openSeaUrl = 'https://opensea.io/collection/'
     openSeaAssetUrl = 'https://opensea.io/assets/ethereum/'
     planetSlugName = 'merging-galaxy'
@@ -76,6 +77,8 @@ async function init() {
     $("button.player-command.mint").click(mint)
     $("button.player-command.reanme").click(rename)
     $("button.player-command.rule").click(rule)
+    $('button.player-command.mint-soon').click(()=> window.open('https://twitter.com/'+tHandler, '_blank'))
+    
     $('button.rename-submit').click(renameSubmit)
     $('button.share-planet') .click(sharePlanet)
     $('button.share-for-drop') .click(shareForDrop)

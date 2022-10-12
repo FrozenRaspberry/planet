@@ -1,0 +1,1 @@
+ntl deploy --dir public-dist --prod

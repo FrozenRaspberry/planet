@@ -22,7 +22,7 @@ async function fetchRankList(retry) {
 		retry = 1 
 	}
 	url = commonFetchUrl + '?' + rankListUrl
-	console.log('common fetch', url)
+	// console.log('common fetch', url)
 	var status
 	var response
 	fetchResult = await fetch(url)

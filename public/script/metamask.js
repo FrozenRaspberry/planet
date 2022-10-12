@@ -176,9 +176,14 @@ async function updateContractStatus() {
             if (totalSupply == maxSupply) {
                 console.log('SOLD OUT!')
                 $('button.mint').hide()
+                $('button.mint-soon').hide()
             } else if (totalSupply < maxSupply && publicSaleStatus) {
                 $('button.mint').show()
                 $('button.mint').text('FREE MINT (' + parseInt(maxSupply - totalSupply) + ' Left)')
+                $('button.mint-soon').hide()
+            } else if (totalSupply < maxSupply && !publicSaleStatus) {
+                $('button.mint').hide()
+                $('button.mint-soon').show()
             } else {
                 console.log('Mint is not live, publicSaleStatus is', publicSaleStatus)
                 $('button.mint').hide()
