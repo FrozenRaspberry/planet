@@ -8,6 +8,7 @@ function sharePlanet(tokenId) {
 
 function shareForDrop() {
 	text =	'@MergingGalaxy is a space of extinction, own your planet and be the last one standing🪐%0A'
+	text += 'Tag 2 REAL friends to enter%0A'
 	text += websiteUrl
 	
 	url = "https://twitter.com/intent/tweet?text=" + text

@@ -3,8 +3,8 @@ const fetch = require('node-fetch')
 const http = require('http')
 var HttpsProxyAgent = require('https-proxy-agent')
 
-require("dotenv").config({ path: ".env.test" }) // TEST
-// require("dotenv").config() // PROD
+// require("dotenv").config({ path: ".env.test" }) // TEST
+require("dotenv").config() // PROD
 console.log(process.env.ENV)
 console.log(process.env.PLANET_CONTRACT_ADDRESS)
 const planetABI = require(process.env.PLANET_CONTRACT_ABI_FILE_NAME)
@@ -49,11 +49,13 @@ async function refreshPlanet(tokenId, retry) {
     if (process.env.NEED_PROXY == '1') {
         options = {
             method: 'GET',
-            agent: new HttpsProxyAgent('http://127.0.0.1:7890')
+            agent: new HttpsProxyAgent('http://127.0.0.1:7890'),
+            headers: { Accept: 'application/json', 'X-API-KEY': process.env.OS_API_KEY },
         } 
     } else {
         options = {
-            method: 'GET'
+            method: 'GET',
+            headers: { Accept: 'application/json', 'X-API-KEY': process.env.OS_API_KEY },
         } 
     }
 
